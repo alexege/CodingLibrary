@@ -36,37 +36,28 @@
         <p>Click on the element below to open the side navigation menu, and push this content to the right.</p>
         <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>
     
+    <!-- Dynamically Generate Notes from database -->
     {% for note in all_notes %}
-    <div style="border: 2px solid black; padding: 10px;">
-        <p>Title: {{note.title}}</p>
-        <p>Category: {{note.category}}</p>
-        <p>Content: {{note.content}}</p>
+    <button class="accordion">{{note.title}}</button>
+    <div class="panel">
+        {% for comment in NoteComments %}
+        <ul>
+            {% if comment.parent.id == note.id %}
+            <li>{{ comment.content }}</li>
+            {% endif %}
+        </ul>
+        {% endfor %}
+
+        <form action="new/comment/{{note.id}}" method="POST">
+            {% csrf_token %}
+            <textarea name="NoteComment_content" cols="30" rows="1"></textarea>
+            <button>Add</button>
+        </form>
+
     </div>
     {% endfor %}
 
-    <h2>Animated Accordion</h2>
-    <p>Click on the buttons to open the collapsible content.</p>
-
-    <button class="accordion">Arrays and Strings</button>
-    <div class="panel">
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem vitae sequi, amet impedit quis dicta quae tempore velit omnis sapiente maiores, veritatis, incidunt veniam accusantium ratione sit laborum accusamus neque.</p>
-    </div>
-
-    <button class="accordion">Linked Lists</button>
-    <div class="panel">
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem vitae sequi, amet impedit quis dicta quae tempore velit omnis sapiente maiores, veritatis, incidunt veniam accusantium ratione sit laborum accusamus neque.</p>
-    </div>
-
-    <button class="accordion">Stacks and Queues</button>
-    <div class="panel">
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem vitae sequi, amet impedit quis dicta quae tempore velit omnis sapiente maiores, veritatis, incidunt veniam accusantium ratione sit laborum accusamus neque.</p>
-    </div>
-
-    <button class="accordion">Trees and Graphs</button>
-    <div class="panel">
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem vitae sequi, amet impedit quis dicta quae tempore velit omnis sapiente maiores, veritatis, incidunt veniam accusantium ratione sit laborum accusamus neque.</p>
-    </div>
-
+    <!-- Allow user to add a new note -->
     <button class="accordion">+</button>
     <div class="panel">
         <form action="new" method="POST">
