@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'CodingLibraryApp/css/style.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="{% static 'CodingLibraryApp/js/script.js' %}"></script>
+    <title>Index</title>
+</head>
+<body>
+
+    <div class="topic">
+        <p>Content</p>
+    </div>
+    
+      <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="main.html">Index</a>
+        <div>
+
+        </div>
+        <a href="#">Python</a>
+        <ul>
+            <li>Flask</li>
+            <li>Django</li>
+        </ul>
+        <a href="#">JavaScript</a>
+        <a href="#">C#</a>
+      </div>
+      
+      <div id="main">
+        <h2>Sidenav Push Example</h2>
+        <p>Click on the element below to open the side navigation menu, and push this content to the right.</p>
+        <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>
+    
+    {% for note in all_notes %}
+    <div style="border: 2px solid black; padding: 10px;">
+        <p>Title: {{note.title}}</p>
+        <p>Category: {{note.category}}</p>
+        <p>Content: {{note.content}}</p>
+    </div>
+    {% endfor %}
+
+    <h2>Animated Accordion</h2>
+    <p>Click on the buttons to open the collapsible content.</p>
+
+    <button class="accordion">Arrays and Strings</button>
+    <div class="panel">
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem vitae sequi, amet impedit quis dicta quae tempore velit omnis sapiente maiores, veritatis, incidunt veniam accusantium ratione sit laborum accusamus neque.</p>
+    </div>
+
+    <button class="accordion">Linked Lists</button>
+    <div class="panel">
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem vitae sequi, amet impedit quis dicta quae tempore velit omnis sapiente maiores, veritatis, incidunt veniam accusantium ratione sit laborum accusamus neque.</p>
+    </div>
+
+    <button class="accordion">Stacks and Queues</button>
+    <div class="panel">
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem vitae sequi, amet impedit quis dicta quae tempore velit omnis sapiente maiores, veritatis, incidunt veniam accusantium ratione sit laborum accusamus neque.</p>
+    </div>
+
+    <button class="accordion">Trees and Graphs</button>
+    <div class="panel">
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem vitae sequi, amet impedit quis dicta quae tempore velit omnis sapiente maiores, veritatis, incidunt veniam accusantium ratione sit laborum accusamus neque.</p>
+    </div>
+
+    <button class="accordion">+</button>
+    <div class="panel">
+        <form action="new" method="POST">
+            {% csrf_token %}
+            <input type="text" name="note-title">
+            <select name="note-category" class="form-control selection">
+                <option value="all">all</option>
+                {% for category in list_of_sub_categories %}
+                <option value="{{category.name}}">{{category.name}}</option>
+                {% endfor %}
+            </select>
+            <textarea name="note-content" cols="30" rows="1"></textarea>
+            <button>Add</button>
+        </form>
+    </div>
+
+    
+
+</div>
+
+</body>
+</html>
