@@ -85,3 +85,15 @@
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
   }
+
+  .hiddenForm {
+    display: none;
+  }
+
+  /* drag and drop panels */
+  .div1 {
+    width: 350px;
+    height: 70px;
+    padding: 10px;
+    border: 1px solid #aaaaaa;
+  }

@@ -31,3 +31,15 @@ def addNoteComment(request, id):
     form_content = request.POST['NoteComment_content']
     noteComment_content = NoteComment.objects.create(content=form_content, parent=parent_object)
     return redirect('/')
+
+def editNoteComment(request, id):
+    print("Updating comment with id: " + id)
+    NoteCommentToUpdate = NoteComment.objects.get(id=id)
+    NoteCommentToUpdate.content = request.POST['NoteComment_content']
+    NoteCommentToUpdate.save()
+    return redirect('/')
+    
+def deleteNoteComment(request, id):
+    NoteCommentToDelete = NoteComment.objects.get(id=id)
+    NoteCommentToDelete.delete()
+    return redirect('/')

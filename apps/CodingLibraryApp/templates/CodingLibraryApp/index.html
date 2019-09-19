@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static 'CodingLibraryApp/css/style.css' %}">
+    <link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="{% static 'CodingLibraryApp/js/script.js' %}"></script>
     <title>Index</title>
@@ -40,20 +41,25 @@
     {% for note in all_notes %}
     <button class="accordion">{{note.title}}</button>
     <div class="panel">
-        {% for comment in NoteComments %}
         <ul>
+        {% for comment in NoteComments %}
             {% if comment.parent.id == note.id %}
-            <li>{{ comment.content }}</li>
+            <li>{{ comment.content }} <a href="#" class="edit" onclick="ToggleEditForm('{{comment.id}}')"><i class="far fa-edit"></i></a><a href="delete/comment/{{comment.id}}"><i class="far fa-trash-alt"></i></a> </li>
+            <form action="edit/comment/{{comment.id}}" method="POST" class="editForm{{comment.id}} hiddenForm">
+                {% csrf_token %}
+                <textarea name="NoteComment_content" cols="30" rows="1" placeholder="{{comment.content}}">{{comment.content}}</textarea>
+                <button>Update</button>
+            </form>
             {% endif %}
-        </ul>
         {% endfor %}
-
+        
         <form action="new/comment/{{note.id}}" method="POST">
             {% csrf_token %}
             <textarea name="NoteComment_content" cols="30" rows="1"></textarea>
             <button>Add</button>
         </form>
-
+        </ul>
+        
     </div>
     {% endfor %}
 
