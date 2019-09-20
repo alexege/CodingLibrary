@@ -50,6 +50,13 @@ function ToggleEditFormNote(id) {
 $(document).ready(function(){
 console.log("Webpage Loaded");
 
+$(".panel").focusin(function(){
+    $(this).css({"background-color" : "orange"});
+});
+$(".panel").focusout(function(){
+    $(this).css({"background-color" : "white"});
+});
+
 // accordion javascript
 var acc = document.getElementsByClassName("accordion");
 var i;

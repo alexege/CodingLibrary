@@ -12,6 +12,13 @@
     <title>Index</title>
 </head>
 <body>
+<!-- 
+    <p>Edit this text in place</p>
+    <form action="new/subcategory/{{category.id}}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="subcategory-name">
+        <button>Add</button>
+    </form> -->
     
       <div id="mySidenav" class="sidenav">
         <a href="main.html">Index</a>
@@ -23,7 +30,7 @@
                 <ul>
                     {% for subcategory in all_subcategories %}
                         {% if subcategory.parent.id == category.id %}
-                            <li><a href="notes/{{subcategory.name}}">{{subcategory.name}}</a></li>
+                            <li><a href="view/{{category.name}}/{{subcategory.name}}">{{subcategory.name}}</a></li>
                         {% endif %}
                     {% endfor %}
                 </ul>

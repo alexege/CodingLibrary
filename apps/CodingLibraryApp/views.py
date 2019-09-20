@@ -72,3 +72,11 @@ def deleteNoteComment(request, id):
     NoteCommentToDelete = NoteComment.objects.get(id=id)
     NoteCommentToDelete.delete()
     return redirect('/')
+
+def viewSubCategory(request, category, subcategory):
+    context = {
+        "category" : Category.objects.all(),
+        "subcategory" : Subcategory.objects.all(),
+        'subcategory_notes' : Note.objects.all().filter(category=category)
+    }
+    return render(request, "CodingLibraryApp/view.html", context)
