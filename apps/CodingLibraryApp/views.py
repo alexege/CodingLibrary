@@ -16,6 +16,11 @@ def addCategory(request):
     Category.objects.create(name=category_name)
     return redirect('/')
 
+def deleteCategory(request, id):
+    CategoryToDelete = Category.objects.get(id=id)
+    CategoryToDelete.delete()
+    return redirect('/')
+
 def addSubCategory(request, id):
     category_to_add_to = Category.objects.get(id=id)
 

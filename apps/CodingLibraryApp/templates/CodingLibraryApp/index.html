@@ -16,14 +16,14 @@
       <div id="mySidenav" class="sidenav">
         <a href="main.html">Index</a>
         <div>
-
         {% for category in all_categories %}
-            <a href="#" class="nav_accordion"><span class="category_title">{{category.name}}</span></a>
+            <div class="category">
+            <a href="#" class="nav_accordion"><span class="category_title">{{category.name}}</span><a href="delete/category/{{category.id}}"><i class="far fa-trash-alt trash_icon"></i></a></a>
             <div class="nav_panel">
                 <ul>
                     {% for subcategory in all_subcategories %}
-                        {% if subcategory.id == category.id %}
-                            <li>{{subcategory.name}}</li>
+                        {% if subcategory.parent.id == category.id %}
+                            <li><a href="notes/{{subcategory.name}}">{{subcategory.name}}</a></li>
                         {% endif %}
                     {% endfor %}
                 </ul>
@@ -33,6 +33,7 @@
                     <button>Add</button>
                 </form>
             </div>
+        </div>
         {% endfor %}
 
         <form action="new/category/" method="POST">
@@ -90,7 +91,7 @@
             <input type="text" name="note-title">
             <select name="note-category" class="form-control selection">
                 <option value="all">all</option>
-                {% for category in list_of_sub_categories %}
+                {% for category in all_categories %}
                 <option value="{{category.name}}">{{category.name}}</option>
                 {% endfor %}
             </select>

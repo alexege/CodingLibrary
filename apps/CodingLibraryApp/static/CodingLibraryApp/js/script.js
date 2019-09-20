@@ -75,7 +75,7 @@ for (i = 0; i < acc.length; i++) {
     acc[i].addEventListener("click", function() {
         console.log("Triggering");
         this.classList.toggle("active");
-        var panel = this.nextElementSibling;
+        var panel = this.nextElementSibling.nextElementSibling;
         if (panel.style.display === "block") {
         panel.style.display = "none";
         } else {
