@@ -11,6 +11,18 @@ def index(request):
     }
     return render(request, "CodingLibraryApp/index.html", context)
 
+def addCategory(request):
+    category_name = request.POST['category-name']
+    Category.objects.create(name=category_name)
+    return redirect('/')
+
+def addSubCategory(request, id):
+    category_to_add_to = Category.objects.get(id=id)
+
+    subcategory_name = request.POST['subcategory-name']
+    Subcategory.objects.create(name=subcategory_name, parent=category_to_add_to)
+    return redirect('/')
+
 def addNote(request):
     
     # Grab data from webpage
@@ -24,6 +36,18 @@ def addNote(request):
     # createa a new note comment
     new_notecomment = NoteComment.objects.create(content=form_content, parent=new_note)
 
+    return redirect('/')
+
+def editNote(request, id):
+    print("Updating Note with id: " + id)
+    NoteToUpdate = Note.objects.get(id=id)
+    NoteToUpdate.title = request.POST['Note_title']
+    NoteToUpdate.save()
+    return redirect('/')
+
+def deleteNote(request, id):
+    NoteToDelete = Note.objects.get(id=id)
+    NoteToDelete.delete()
     return redirect('/')
 
 def addNoteComment(request, id):

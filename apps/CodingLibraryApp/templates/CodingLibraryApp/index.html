@@ -12,34 +12,52 @@
     <title>Index</title>
 </head>
 <body>
-
-    <div class="topic">
-        <p>Content</p>
-    </div>
     
       <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <a href="main.html">Index</a>
         <div>
 
+        {% for category in all_categories %}
+            <a href="#" class="nav_accordion"><span class="category_title">{{category.name}}</span></a>
+            <div class="nav_panel">
+                <ul>
+                    {% for subcategory in all_subcategories %}
+                        {% if subcategory.id == category.id %}
+                            <li>{{subcategory.name}}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                <form action="new/subcategory/{{category.id}}" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="subcategory-name">
+                    <button>Add</button>
+                </form>
+            </div>
+        {% endfor %}
+
+        <form action="new/category/" method="POST">
+            {% csrf_token %}
+            <input type="text" name="category-name">
+            <button>Add</button>
+        </form>
+
         </div>
-        <a href="#">Python</a>
-        <ul>
-            <li>Flask</li>
-            <li>Django</li>
-        </ul>
-        <a href="#">JavaScript</a>
-        <a href="#">C#</a>
       </div>
       
-      <div id="main">
-        <h2>Sidenav Push Example</h2>
-        <p>Click on the element below to open the side navigation menu, and push this content to the right.</p>
-        <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>
+    <div id="main">
+
+        <h1><a href="/">Notes</a></h1>
+
+        <span style="font-size:30px;cursor:pointer" onclick="toggleNav()"><i id="toggleNavbar" class="fas fa-caret-square-right"></i></span>
     
     <!-- Dynamically Generate Notes from database -->
     {% for note in all_notes %}
-    <button class="accordion">{{note.title}}</button>
+    <button class="accordion"><span class="note_title">{{note.title}}</span> [{{note.category}}]<br>{{note.created_at}}<br><a href="#" class="edit" onclick="ToggleEditFormNote('{{note.id}}')"><i class="far fa-edit"></i></a><a href="delete/note/{{note.id}}"><i class="far fa-trash-alt"></i></a> </button>
+    <form action="edit/note/{{note.id}}" method="POST" class="editFormNote{{note.id}} hiddenForm">
+        {% csrf_token %}
+        <textarea name="Note_title" cols="30" rows="1">{{note.title}}</textarea>
+        <button>Update</button>
+    </form>
     <div class="panel">
         <ul>
         {% for comment in NoteComments %}
@@ -65,6 +83,7 @@
 
     <!-- Allow user to add a new note -->
     <button class="accordion">+</button>
+    <div></div> <!-- Logic triggers 2nd sibling. Need to add a filler or change method -->
     <div class="panel">
         <form action="new" method="POST">
             {% csrf_token %}
@@ -79,8 +98,6 @@
             <button>Add</button>
         </form>
     </div>
-
-    
 
 </div>
 
