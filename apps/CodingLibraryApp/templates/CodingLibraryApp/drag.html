@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<style>
+#div1, #div2, #div3, #div4, .note {
+  /* float: left; */
+  width: 100px;
+  height: 35px;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid black;
+}
+</style>
+<script>
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  console.log("target", ev.target.tagName);
+  if(ev.target.tagName == "DIV"){
+      console.log("child", ev.target.firstChild)
+      console.log(ev.target.hasChildNodes())
+      console.log("is a div");
+    ev.target.appendChild(document.getElementById(data));
+  }
+}
+</script>
+</head>
+<body>
+
+    
+    {% for note in all_notes %}
+    <div id="div{{note.id}}" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <div id="div{{note.id}}" class="note" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div draggable="true" ondragstart="drag(event)" id="drag{{note.id}}" style="font-size: 8px; border: 1px solid red;">
+                    <h2>Title {{note.id}}</h2>
+            </div>        
+            <!-- <p>This is a comment for a title post.</p> -->
+        </div>
+    </div>
+    {% endfor %}
+
+</body>
+</html>

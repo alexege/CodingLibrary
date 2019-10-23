@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+        background: black;
+        }
+
+        .fill {
+        /* background-image: url('https://source.unsplash.com/random/150x150'); */
+        position: relative;
+        /* height: 150px; */
+        /* width: 150px; */
+        /* top: 5px; */
+        /* left: 5px; */
+        cursor: pointer;
+        border: 1px solid black;
+        background-color: rgb(250, 250, 131);
+        }
+
+        .hold {
+        border: solid 5px #ccc;
+        }
+
+        .empty {
+        /* display: inline-block; */
+        min-height: 50px;
+        width: 500px;
+        margin: 10px;
+        border: solid 3px salmon;
+        background: white;
+        }
+
+        .hovered {
+        background: #f4f4f4;
+        border-style: dashed;
+        }
+
+    </style>
+</head>
+<body>
+
+        <div class="empty"> 
+            <div class="fill" draggable="true">
+            <h2>Note {{note.title}}</h2>
+            </div>
+        </div>
+
+    <div class="empty">
+        <div class="fill2" draggable="true">
+            <h2>Note {{note.title}}</h2>
+        </div>
+    </div>
+    <div class="empty">
+        <div class="fill" draggable="true"></div>
+    </div>
+    <div class="empty"></div>
+
+    <!-- {% for note in all_notes %}
+    <div class="empty" id="{{note.id}}">{{note.id}}
+        <div class="fill" draggable="true">
+            <h2>Note {{note.title}}</h2>
+            <h5>{{note.category}}</h5>
+            <ul>
+                <li>{{note.content}}</li>
+            </ul>
+        </div>
+
+    </div>
+    {% endfor %} -->
+    
+
+
+    <script>
+        const fill = document.querySelector('.fill');
+        const empties = document.querySelectorAll('.empty');
+
+        // Fill listeners
+        fill.addEventListener('dragstart', dragStart);
+        fill.addEventListener('dragend', dragEnd);
+
+        // Loop through empty boxes and add listeners
+        for (const empty of empties) {
+        empty.addEventListener('dragover', dragOver);
+        empty.addEventListener('dragenter', dragEnter);
+        empty.addEventListener('dragleave', dragLeave);
+        empty.addEventListener('drop', dragDrop);
+        }
+
+        // Drag Functions
+
+        function dragStart() {
+        this.className += ' hold';
+            setTimeout(function(){
+                this.className = 'invisible';
+            }, 0);
+        }
+
+        function dragEnd() {
+        this.className = 'fill';
+        }
+
+        function dragOver(e) {
+        e.preventDefault();
+        }
+
+        function dragEnter(e) {
+        e.preventDefault();
+        this.className += ' hovered';
+        }
+
+        function dragLeave() {
+        this.className = 'empty';
+        }
+
+        function dragDrop() {
+        this.className = 'empty';
+        this.append(fill);
+        console.log(this.className);
+        console.log("children", this.childNodes)
+        }
+
+    </script>
+
+</body>
+</html>

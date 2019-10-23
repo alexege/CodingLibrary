@@ -7,20 +7,15 @@
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static 'CodingLibraryApp/css/style.css' %}">
     <link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="{% static 'CodingLibraryApp/js/script.js' %}"></script>
     <title>Index</title>
 </head>
 <body>
-<!-- 
-    <p>Edit this text in place</p>
-    <form action="new/subcategory/{{category.id}}" method="POST">
-        {% csrf_token %}
-        <input type="text" name="subcategory-name">
-        <button>Add</button>
-    </form> -->
     
-      <div id="mySidenav" class="sidenav">
+    <!----------------SideNav---------------->
+    <div id="mySidenav" class="sidenav">
         <a href="main.html">Index</a>
         <div>
         {% for category in all_categories %}
@@ -36,7 +31,7 @@
                 </ul>
                 <form action="new/subcategory/{{category.id}}" method="POST">
                     {% csrf_token %}
-                    <input type="text" name="subcategory-name">
+                    <input type="text" name="subcategory-name" class="form-control">
                     <button>Add</button>
                 </form>
             </div>
@@ -45,13 +40,16 @@
 
         <form action="new/category/" method="POST">
             {% csrf_token %}
-            <input type="text" name="category-name">
+            <input type="text" name="category-name" class="form-control">
             <button>Add</button>
         </form>
 
         </div>
-      </div>
-      
+    </div>
+    
+    
+    <!-- -------------- Main -------------- --> 
+
     <div id="main">
 
         <h1><a href="/">Notes</a></h1>
@@ -59,6 +57,7 @@
         <span style="font-size:30px;cursor:pointer" onclick="toggleNav()"><i id="toggleNavbar" class="fas fa-caret-square-right"></i></span>
     
     <!-- Dynamically Generate Notes from database -->
+    <div id="replaceNote">
     {% for note in all_notes %}
     <button class="accordion"><span class="note_title">{{note.title}}</span> [{{note.category}}]<br>{{note.created_at}}<br><a href="#" class="edit" onclick="ToggleEditFormNote('{{note.id}}')"><i class="far fa-edit"></i></a><a href="delete/note/{{note.id}}"><i class="far fa-trash-alt"></i></a> </button>
     <form action="edit/note/{{note.id}}" method="POST" class="editFormNote{{note.id}} hiddenForm">
@@ -67,42 +66,44 @@
         <button>Update</button>
     </form>
     <div class="panel">
-        <ul>
+    <ul>
         {% for comment in NoteComments %}
             {% if comment.parent.id == note.id %}
-            <li>{{ comment.content }} <a href="#" class="edit" onclick="ToggleEditForm('{{comment.id}}')"><i class="far fa-edit"></i></a><a href="delete/comment/{{comment.id}}"><i class="far fa-trash-alt"></i></a> </li>
-            <form action="edit/comment/{{comment.id}}" method="POST" class="editForm{{comment.id}} hiddenForm">
+            <li onclick="ToggleEditForm('{{comment.id}}')" id="comment{{comment.id}}">{{ comment.content }} <a href="#" class="edit" onclick="ToggleEditForm('{{comment.id}}')"><i class="far fa-edit"></i></a><a href="delete/comment/{{comment.id}}"><i class="far fa-trash-alt"></i></a> </li>
+            <!-- <form action="edit/comment/{{comment.id}}" method="POST" class="editForm{{comment.id}} hiddenForm">
                 {% csrf_token %}
                 <textarea name="NoteComment_content" cols="30" rows="1" placeholder="{{comment.content}}">{{comment.content}}</textarea>
                 <button>Update</button>
-            </form>
+            </form> -->
             {% endif %}
         {% endfor %}
-        
-        <form action="new/comment/{{note.id}}" method="POST">
-            {% csrf_token %}
-            <textarea name="NoteComment_content" cols="30" rows="1"></textarea>
-            <button>Add</button>
-        </form>
-        </ul>
-        
     </div>
+       
+    <form action="new/comment/{{note.id}}" method="POST" note-id="{{note.id}}" class="commentForm">
+        {% csrf_token %}
+        <textarea name="NoteComment_content" cols="30" rows="1"></textarea>
+        <button>Add</button>
+    </form>
+    </ul>
+        
     {% endfor %}
+</div>
+    
 
     <!-- Allow user to add a new note -->
     <button class="accordion">+</button>
     <div></div> <!-- Logic triggers 2nd sibling. Need to add a filler or change method -->
     <div class="panel">
-        <form action="new" method="POST">
+        <form action="new" method="POST" class="noteForm">
             {% csrf_token %}
             <input type="text" name="note-title">
-            <select name="note-category" class="form-control selection">
+            <select name="note-category" class="form-control selection" style="width: 120px; display: inline-block;">
                 <option value="all">all</option>
                 {% for category in all_categories %}
                 <option value="{{category.name}}">{{category.name}}</option>
                 {% endfor %}
             </select>
-            <textarea name="note-content" cols="30" rows="1"></textarea>
+            <textarea name="note-content" cols="30" rows="1" class="form-control"></textarea>
             <button>Add</button>
         </form>
     </div>

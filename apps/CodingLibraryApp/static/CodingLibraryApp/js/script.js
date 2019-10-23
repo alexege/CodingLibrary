@@ -21,18 +21,46 @@ function toggleNav() {
     }
 }
 
-// Toggle edit form for subnote
-var toggle;
-function ToggleEditForm(id) {
-    if(toggle){
-        $(`.editForm${id}`).css({"display" : "none"});
-        toggle = false;
-    } else {
-        $(`.editForm${id}`).css({"display" : "block"});
-        toggle = true;
-    }
-    console.log("Toggle: " + toggle + " editForm" + id);
-}
+
+
+
+// // Toggle edit form for subnote
+// var toggle;
+// function ToggleEditForm(id) {
+//     var saved_content = $(`#comment${id}`).html();
+//     console.log(id);
+//     var content = $(`#comment${id}`).text();
+//     $(`#comment${id}`).replaceWith($("#formTemplate"));
+//     $("#formTemplate").attr('action', `edit/comment/${id}`);
+//     $("#formTemplate").children("textarea").text(content).focusin();
+//     console.log($("#formTemplate").attr('value', "dog beds" ));
+
+//     $(document).on('keypress',function(e) {
+//         if(e.which == 13) {
+//             $("#updateButton").click();
+//         }
+//     });
+
+//     if($("#formTemplate").focusout(function(){
+//         console.log("Lost focus");
+//         $("#updateButton").click();
+//     }));
+
+//     // if($("#formTemplate").focusout(function(){
+//     //     $("#formTemplate").replaceWith(saved_content);
+//     // }));
+
+//     if(toggle){
+//         // $(`.editForm${id}`).css({"display" : "none"});
+//         toggle = false;
+//     } else {
+//         // $(`.editForm${id}`).css({"display" : "block"});
+//         // $(this).html("<p>Replaced by this</p>");
+//         console.log($(this));
+//         toggle = true;
+//     }
+//     console.log("Toggle: " + toggle + " editForm" + id);
+// }
 
 // Toggle edit form for note
 var toggle;
@@ -50,12 +78,54 @@ function ToggleEditFormNote(id) {
 $(document).ready(function(){
 console.log("Webpage Loaded");
 
-$(".panel").focusin(function(){
-    $(this).css({"background-color" : "orange"});
+// Ajax New Note Submission
+// Disable native form submission
+$('.noteForm').submit(function(e) {
+    e.preventDefault();
+    console.log("NoteFormAjax");
+    console.log("The function is: " + $(this).attr("action"));
+    $.ajax({
+        // url: $(this).attr("action"),
+        url: '/new',
+        method: 'post',
+        data: $(this).serialize(),
+        success: function(serverResponse){
+          console.log("Received this from server: ", serverResponse)
+          $('#replaceNote').html(serverResponse)
+        }
+      })
 });
-$(".panel").focusout(function(){
-    $(this).css({"background-color" : "white"});
-});
+
+// $('.commentForm').submit(function(e) {
+//     e.preventDefault();
+//     console.log("running comment function");
+//     var noteId = $(this).attr('note-id');
+//     console.log($(this).attr("action"));
+//     $.ajax({
+//         // url: $(this).attr("action"),
+//         url: '/new/comment/' + noteId,
+//         method: 'post',
+//         data: $(this).serialize(),
+//         success: function(serverResponse){
+//           console.log("Received this from server: ", serverResponse)
+//           $('.replaceComment').html(serverResponse)
+//         }
+//       })
+// });
+
+
+
+
+
+
+
+
+// $(".panel").focusin(function(){
+//     $(this).css({"background-color" : "orange"});
+// });
+// $(".panel").focusout(function(){
+//     $(this).css({"background-color" : "white"});
+// });
 
 // accordion javascript
 var acc = document.getElementsByClassName("accordion");

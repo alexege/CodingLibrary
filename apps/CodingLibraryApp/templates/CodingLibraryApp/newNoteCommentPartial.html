@@ -1,0 +1,11 @@
+{% for comment in NoteComments %}
+    {% if comment.parent.id == note.id %}
+    <p>Index.html</p>
+    <li onclick="ToggleEditForm('{{comment.id}}')" id="comment{{comment.id}}">{{ comment.content }} <a href="#" class="edit" onclick="ToggleEditForm('{{comment.id}}')"><i class="far fa-edit"></i></a><a href="delete/comment/{{comment.id}}"><i class="far fa-trash-alt"></i></a> </li>
+    <!-- <form action="edit/comment/{{comment.id}}" method="POST" class="editForm{{comment.id}} hiddenForm">
+        {% csrf_token %}
+        <textarea name="NoteComment_content" cols="30" rows="1" placeholder="{{comment.content}}">{{comment.content}}</textarea>
+        <button>Update</button>
+    </form> -->
+    {% endif %}
+{% endfor %}

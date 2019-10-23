@@ -14,4 +14,11 @@ urlpatterns = [
     url(r'^new/subcategory/(?P<id>\d+)$', views.addSubCategory),
 
     url(r'^view/(?P<category>[\w\s]+)/(?P<subcategory>[\w\s]+)$', views.viewSubCategory),
+
+    # Ajax
+    url(r'^posts', views.post, name="posts"),
+    
+    
+    url(r'^dragDrop$', views.dragDrop),
+    url(r'^dragDrop2$', views.dragDrop2)
 ]
